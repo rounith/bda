@@ -12,6 +12,7 @@ maven on right click excute
 maven clean
 maven install
 //terminal
+cd desktop
 hadoop fs -mkdir /input
 hadoop fs -put input.txt
 //intellij
