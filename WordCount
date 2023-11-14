@@ -1,0 +1,19 @@
+https://codewitharjun.medium.com/word-count-example-using-hadoop-and-java-8ef3d665e331
+hadoop version
+start-all.sh
+jps
+//localhost:9870(to verify)
+choose maven
+Advance setting org.myorg
+delete Main.class
+add dependcies in pom.xml
+reload
+maven on right click excute
+maven clean
+maven install
+//terminal
+hadoop fs -mkdir /input
+hadoop fs -put input.txt
+//intellij
+in terminal 
+hadoop jar target/loc** org.myorg.WC_Runner /input/input.txt /output
