@@ -1,0 +1,46 @@
+Steps to run Hadoop Map Reduce Program : WordCount
+
+Step 1. Launch Eclipse and set the Eclipse Workspace.
+Step 2. To create the Hadoop MapReduce Project, click on File >> New >> Java Project.
+Provide the Project Name: WordCount
+Click Finish to create the project.
+Step 3. Create a new Package right-click on the Project Name(WordCount) >> New >> Package.
+Provide the package name: org.myorg
+Click Finish to create the package.
+Step 4. Add the Hadoop libraries (jars).
+Right-Click on Project Name(WordCount) >>Build Path>> configure Build Path.
+Add the External jars.
+For this go to hadoop-3.1.2>> share >> hadoop.
+Now we will move to share >> Hadoop in Hadoop MapReduce Project.
+i.	Add the client jar files. Select client jar files and click open.
+ii.	Add common jar files. Select common jar files and click open.
+iii.	Add common/lib libraries. Select common/lib jars and click open.
+iv.	Add yarn jar files. Select yarn jar files and click open.
+v.	Add MapReduce jar files. Select MapReduce jar file and click open.
+vi.	Add HDFS jar files. Select HDFS jar files and click open.
+Click on Apply and Close to add all the Hadoop jar files.
+Now, we have added all required jar files in our project.
+Step 5. Now create a new class that performs the map job.
+In our program WordCountMapper is the class for performing the mapping task.
+Right-Click on Package Name >> New >> Class
+Provide the class name: WordCountMapper 
+Click Finish.
+Write the Mapper code and save it.
+Step 6. Now create another class (in the same way as we used above), for creating a class that performs the reduce job.
+In our program, WordCountReducer is the class to perform the reduce task.
+Right-Click on Package Name >> New >> Class
+Provide the class name: WordCountReducer 
+Click Finish.
+Write the Reducer code and save it.
+Step 7. Now create the driver class, which contains the main method. In our program, the driver class for the project is named “WordCount”.
+Click Finish.
+Write the Driver Code and save it.
+Step 8. Once the build is successful, execute the project by right-clicking the class and select
+Run As – Run Configurations  from the menu.
+Double-click the “Java Applications” from the opened window.
+The main class will have org.myorg.WordCount as main class as we have created package
+Navigate to the “Arguments” tab and add the arguments in the provided space if your Mapreduce program has to get arguments at runtime.
+Give one argument i.e input file path and output directory path 
+/home/hadoop/input.txt	/home/hadoop/Output/
+click “Run”. Execution will be completed
+Output will be displayed in the path specified in argument we can open and check the output
