@@ -1,70 +1,68 @@
 package org.myorg;
+
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.Path; 
-import org.apache.hadoop.io.IntWritable; 
-import org.apache.hadoop.io.Text; 
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-public class MaxTemperature {
-public static void main(String[] args) throws Exception { 
-	Configuration conf = new Configuration();
-	Job job = Job.getInstance(conf, "Max Temperature");
-	job.setJarByClass(MaxTemperature.class);
-	job.setMapperClass(MaxTemperatureMapper.class);
-	job.setCombinerClass(MaxTemperatureReducer.class);
-	job.setReducerClass(MaxTemperatureReducer.class);
-	job.setOutputKeyClass(Text.class);
-	job.setOutputValueClass(IntWritable.class);
-    FileInputFormat.addInputPath(job, new Path(args[0]));
-	FileOutputFormat.setOutputPath(job, new Path(args[1]));
-	System.exit(job.waitForCompletion(true) ? 0 : 1);			
-} 
+
+public class WordCount {
+    public static void main(String[] args) throws Exception {
+        Configuration conf = new Configuration();
+        Job job = Job.getInstance(conf, "word count");
+        job.setJarByClass(WordCount.class);
+        job.setMapperClass(WordCountMapper.class);
+        job.setCombinerClass(WordCountReducer.class);
+        job.setReducerClass(WordCountReducer.class);
+        job.setOutputKeyClass(Text.class);
+        job.setOutputValueClass(IntWritable.class);
+        FileInputFormat.addInputPath(job, new Path(args[0]));
+        FileOutputFormat.setOutputPath(job, new Path(args[1]));
+        System.exit(job.waitForCompletion(true) ? 0 : 1);
+    }
 }
 
 package org.myorg;
-import java.io.IOException; 
-import java.util.StringTokenizer; 
-import org.apache.hadoop.io.IntWritable; 
-import org.apache.hadoop.io.LongWritable; 
-import org.apache.hadoop.io.Text; 
+
+import java.io.IOException;
+import java.util.StringTokenizer;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
-public class MaxTemperatureMapper extends Mapper<LongWritable, Text, Text, IntWritable> 
-{
-	Text k= new Text();
-	@Override 
-    public void map(LongWritable key, Text value, Context context)
-	throws IOException, InterruptedException {
-            String line = value.toString(); 
-            StringTokenizer tokenizer = new StringTokenizer(line," "); 
-            while (tokenizer.hasMoreTokens()) { 
-        	String year= tokenizer.nextToken();
-        	k.set(year);
-        	String temp= tokenizer.nextToken().trim();	
-        	int v = Integer.parseInt(temp); 
-            context.write(k,new IntWritable(v)); 
-        } 
-    } 
+import org.apache.hadoop.io.LongWritable;
+
+public class WordCountMapper extends Mapper<LongWritable, Text, Text, IntWritable> {
+    private Text wordToken = new Text();
+
+    public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
+        StringTokenizer tokens = new StringTokenizer(value.toString());
+
+        while (tokens.hasMoreTokens()) {
+            wordToken.set(tokens.nextToken());
+            context.write(wordToken, new IntWritable(1));
+        }
+    }
 }
 
 package org.myorg;
-import java.io.IOException; 
-import org.apache.hadoop.io.IntWritable; 
-import org.apache.hadoop.io.Text; 
+
+import java.io.IOException;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
-public class MaxTemperatureReducer extends Reducer<Text, IntWritable, Text, IntWritable> 
-{
-	 @Override 
-     public void reduce(Text key, Iterable<IntWritable> values, Context context)
-		throws IOException, InterruptedException {
-     	int maxtemp=0;
-         for(IntWritable it : values) { 
-         int temperature= it.get();
-         	if(maxtemp<temperature)
-         	{
-         		maxtemp =temperature;
-         	}
-         } 
-         context.write(key, new IntWritable(maxtemp)); 
-     } 
+
+public class WordCountReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
+    private IntWritable count = new IntWritable();
+
+    public void reduce(Text key, Iterable<IntWritable> values, Context context)
+            throws IOException, InterruptedException {
+        int valueSum = 0;
+        for (IntWritable val : values) {
+            valueSum += val.get();
+        }
+        count.set(valueSum);
+        context.write(key, count);
+    }
 }
