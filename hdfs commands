@@ -1,0 +1,56 @@
+To run any commands initially run ./start-all.sh
+And while exiting ./stop-all.sh
+
+HADOOP COMMANDS
+
+1.	Create an input directory
+ 
+            hdfs dfs -mkdir -p tdata
+
+2.	HDFS put Command transfer and store the data file from the local systems to the HDFS using the following commands in the terminal.
+
+            hdfs dfs -put /home/hadoop/input.txt  tdata/
+
+3.	HDFS get command transfer and store the data file to local systems from HDFS
+
+            hdfs dfs -get student/input1.txt /home/hadoop/
+
+4.	To create an empty file in hdfs 
+      
+            hdfs dfs -touchz student/test.txt
+
+5.	Read the content from the file
+
+            hdfs dfs -cat tdata/test.txt
+
+6.	Copy From Local and copy To Local 
+
+            hdfs dfs -copyFromLocal /home/hadoop/test.txt test/
+
+            hdfs dfs -copyToLocal test/test.txt test.txt.hdfs
+
+7.	To set replication factor
+
+           hdfs dfs -setrep -w 5 tdata/test.txt
+
+8.	To get replication factor
+           
+           hdfs dfs -stat "%r" tdata/test.txt
+
+9.	List of files of directory
+
+           hdfs dfs -ls   or  hdfs dfs -ls student
+ 
+10.	Copy the file content from one location to other 
+
+           hdfs dfs -cp InputDir/input.txt  student
+
+11.	To Move file from one place to another 
+
+          hdfs dfs -mv InputDir/input.txt  student
+
+12.	To remove to file or directory
+
+          hdfs dfs -rm OutputDir   or  hdfs dfs -rm OutputDir/input.txt
+
+
